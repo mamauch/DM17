@@ -1,0 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
+*.swp
+*.pyc
+/Uebung1/apyori.egg-info/
+/Uebung1/dist/
+/Uebung1/build/
