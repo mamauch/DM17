@@ -14,7 +14,7 @@ def main():
     optparser.add_option('-s', '--minSupport',
                          dest='minS',
                          help='minimum support value',
-                         default=0.15,
+                         default=0.4,
                          type='float')
 
     (options, args) = optparser.parse_args()
@@ -32,7 +32,7 @@ def main():
 
     items = runApriori(inFile, minSupport)
 
-    printResults(items)
+    printResults(items, minSupport, options.input.split("/")[2])
 
 
 if __name__ == "__main__":

@@ -91,10 +91,22 @@ def runApriori(data_iter, minSupport):
     return toRetItems
 
 
-def printResults(items):
+def printResults(items, minSupport, name):
     """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
+
+    outString = "items;lenItems;support"
+    outString += "\n"
     for item, support in sorted(items, key=lambda (item, support): support):
+        outString += str(item)
+        outString += ";"
+        outString += str(len(item))
+        outString += ";"
+        outString += str(support)
+        outString += ";"
+        outString += "\n"
         print ("item: %s , %.3f" % (str(item), support))
+    output = open("output/" + name + "_" + str(minSupport) + ".csv", "w")
+    output.write(outString)
 
 
 def dataFromFile(fname):
