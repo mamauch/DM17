@@ -45,7 +45,7 @@ def getItemSetTransactionList(data_iterator):
     return itemSet, transactionList
 
 
-def runApriori(data_iter, minSupport, minConfidence):
+def runApriori(data_iter, minSupport):
     """
     run the apriori algorithm. data_iter is a record iterator
     Return both:
@@ -88,28 +88,13 @@ def runApriori(data_iter, minSupport, minConfidence):
         toRetItems.extend([(tuple(item), getSupport(item))
                            for item in value])
 
-    toRetRules = []
-    for key, value in largeSet.items()[1:]:
-        for item in value:
-            _subsets = map(frozenset, [x for x in subsets(item)])
-            for element in _subsets:
-                remain = item.difference(element)
-                if len(remain) > 0:
-                    confidence = getSupport(item)/getSupport(element)
-                    if confidence >= minConfidence:
-                        toRetRules.append(((tuple(element), tuple(remain)),
-                                           confidence))
-    return toRetItems, toRetRules
+    return toRetItems
 
 
-def printResults(items, rules):
+def printResults(items):
     """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
     for item, support in sorted(items, key=lambda (item, support): support):
         print ("item: %s , %.3f" % (str(item), support))
-    print ("\n------------------------ RULES:")
-    for rule, confidence in sorted(rules, key=lambda (rule, confidence): confidence):
-        pre, post = rule
-        print ("Rule: %s ==> %s , %.3f" % (str(pre), str(post), confidence))
 
 
 def dataFromFile(fname):

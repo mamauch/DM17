@@ -4,7 +4,7 @@
 def main():
     import sys
     from optparse import OptionParser
-    from apriori import *
+    from apriori import runApriori, dataFromFile, printResults
 
     optparser = OptionParser()
     optparser.add_option('-f', '--inputFile',
@@ -15,11 +15,6 @@ def main():
                          dest='minS',
                          help='minimum support value',
                          default=0.15,
-                         type='float')
-    optparser.add_option('-c', '--minConfidence',
-                         dest='minC',
-                         help='minimum confidence value',
-                         default=0.6,
                          type='float')
 
     (options, args) = optparser.parse_args()
@@ -34,19 +29,18 @@ def main():
         sys.exit('System will exit')
 
     minSupport = options.minS
-    minConfidence = options.minC
 
-    items, rules = runApriori(inFile, minSupport, minConfidence)
+    items = runApriori(inFile, minSupport)
 
-    printResults(items, rules)
+    printResults(items)
 
 
 if __name__ == "__main__":
     import profile
     import sys
 
-    if sys.argv == 0:
+    if sys.argv[1] == str(0):
         main()
-    elif sys.argv == 1:
+    elif sys.argv[1] == str(1):
         profile.run('main()')
 
