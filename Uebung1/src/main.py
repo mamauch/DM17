@@ -43,5 +43,10 @@ def main():
 
 if __name__ == "__main__":
     import profile
-    profile.run('main()')
+    import sys
+
+    if sys.argv == 0:
+        main()
+    elif sys.argv == 1:
+        profile.run('main()')
 
