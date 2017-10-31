@@ -17,7 +17,7 @@ Useage
 Description: Simple Python implementation of the Apriori Algorithm
 
 Usage:
-    $python apriori.py -f DATASET.csv -s minSupport
-
-    $python apriori.py -f DATASET.csv -s 0.15
+- Run :code:`mkdir output`
+- Run :code:`cd src`
+- Run :code:`python apriori.py withTimeOrNot(0,1) -f DATASET.csv -s minSupport`
 """
