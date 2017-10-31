@@ -18,6 +18,7 @@ Description: Simple Python implementation of the Apriori Algorithm
 
 Usage:
 - Run :code:`mkdir output`
+- Run :code:`mkdir data` (Put your data here)
 - Run :code:`cd src`
 - Run :code:`python apriori.py withTimeOrNot(0,1) -f DATASET.csv -s minSupport`
 """
