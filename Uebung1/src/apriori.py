@@ -105,8 +105,8 @@ def printResults(items, minSupport, name):
         outString += ";"
         outString += "\n"
         print ("item: %s , %.3f" % (str(item), support))
-    output = open("output/" + name + "_" + str(minSupport) + ".csv", "w")
-    output.write(outString)
+    with open("../output/" + name + "_" + str(minSupport) + ".csv", "w") as output:
+        output.write(outString)
 
 
 def dataFromFile(fname):
@@ -120,11 +120,8 @@ def dataFromFile(fname):
             0|1|1|0|0       B|C
             ...             ...
         """
-        file_iter = open(fname, 'rU')
-        for line in file_iter:
-                line_tmp = []
-                for i in range(len(line.split(","))):
-                    if line.split(",")[i] == str(1):
-                        line_tmp.append(str(i))
+        with open(fname, 'rU') as file_iter:
+            for line in file_iter:
+                line_tmp = [i for (i, elem) in enumerate(line.split(",")) if int(elem)]
                 record = frozenset(line_tmp)
                 yield record
