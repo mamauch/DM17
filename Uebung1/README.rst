@@ -9,12 +9,15 @@ Installation
 
 - Run :code:`python setup.py install`.
 
+Useage
+------------
+
 
 """
-Description     : Simple Python implementation of the Apriori Algorithm
+Description: Simple Python implementation of the Apriori Algorithm
 
 Usage:
-    $python apriori.py -f DATASET.csv -s minSupport  -c minConfidence
+    $python apriori.py -f DATASET.csv -s minSupport
 
-    $python apriori.py -f DATASET.csv -s 0.15 -c 0.6
+    $python apriori.py -f DATASET.csv -s 0.15
 """
