@@ -10,7 +10,6 @@ def plot_hist(data, name):
     plt.title(name)
     plt.grid(True)
     plt.savefig(name + ".pdf")
-    plt.show()
 
 def readFile(filePath):
     with open(filePath, "r") as input_file:
