@@ -67,6 +67,10 @@ def runApriori(data_iter, minSupport):
                                         minSupport,
                                         freqSet)
 
+    # get 1 NBoarder
+    oneNBoarder = getFirstNegativBoarder(itemSet, oneCSet)
+    currentNBoarder = oneNBoarder
+
     currentLSet = oneCSet
     k = 2
     while(currentLSet != set([])):
@@ -77,7 +81,12 @@ def runApriori(data_iter, minSupport):
                                                 minSupport,
                                                 freqSet)
         currentLSet = currentCSet
+
+        # get k NBoarder
+        currentNBoarder = calculateKNegativeBoarder(currentNBoarder, currentCSet, freqSet)
+
         k = k + 1
+    print currentNBoarder
 
     def getSupport(item):
             """local function which Returns the support of an item"""
@@ -96,7 +105,6 @@ def printResults(items, minSupport, name):
 
     outString = "items;lenItems;support"
     outString += "\n"
-    print items
     for item, support in sorted(items, key=lambda (item, support): support):
         outString += str(item)
         outString += ";"
@@ -126,3 +134,21 @@ def dataFromFile(fname):
                 line_tmp = [i for (i, elem) in enumerate(line.split(",")) if int(elem)]
                 record = frozenset(line_tmp)
                 yield record
+
+def getFirstNegativBoarder(itemSet, oneCSet):
+    for item in oneCSet:
+        itemSet.remove(item)
+    return itemSet
+
+def calculateKNegativeBoarder(currentNBoarder, currentCSet, freqSet):
+    # B-i = B-(i-1) U (Ci - Fi)
+    tmpCurrentSet = []
+    for item in currentCSet:
+        tmpCurrentSet.append(item)
+
+    for item in freqSet:
+        if item in tmpCurrentSet:
+            tmpCurrentSet.remove(item)
+    for i in tmpCurrentSet:
+        currentNBoarder.append(i)
+    return currentNBoarder
