@@ -96,6 +96,7 @@ def printResults(items, minSupport, name):
 
     outString = "items;lenItems;support"
     outString += "\n"
+    print items
     for item, support in sorted(items, key=lambda (item, support): support):
         outString += str(item)
         outString += ";"
