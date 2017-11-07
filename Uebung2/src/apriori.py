@@ -67,9 +67,10 @@ def runApriori(data_iter, minSupport):
                                         minSupport,
                                         freqSet)
 
-    # get 1 NBoarder
+    # get 1 NBoarder ; 1 PBoarder is zero
     oneNBoarder = getFirstNegativBoarder(itemSet, oneCSet)
     currentNBoarder = oneNBoarder
+    currentPBoarder = set()
 
     currentLSet = oneCSet
     k = 2
@@ -80,13 +81,17 @@ def runApriori(data_iter, minSupport):
                                                 transactionList,
                                                 minSupport,
                                                 freqSet)
+
         currentLSet = currentCSet
 
         # get k NBoarder
         currentNBoarder = calculateKNegativeBoarder(currentNBoarder, currentCSet, freqSet)
 
+        # get k PBoarder
+        currentPBoarder = calculateKPositivBoarder(currentPBoarder, largeSet, k)
+
         k = k + 1
-    print currentNBoarder
+    print currentPBoarder
 
     def getSupport(item):
             """local function which Returns the support of an item"""
@@ -152,3 +157,23 @@ def calculateKNegativeBoarder(currentNBoarder, currentCSet, freqSet):
     for i in tmpCurrentSet:
         currentNBoarder.append(i)
     return currentNBoarder
+
+def calculateKPositivBoarder(currentPBoarder, largeSet, currentDic):
+    # B+(i-1) = B+(i-2) U (Schnittmenge von F(i-1) und Fi)
+    tmpCurrentPBoarder = set()
+    if currentDic-2 == 0:
+        tmpCurrentPBoarder = largeSet[currentDic-1]
+    else:
+        for item in currentPBoarder:
+            tmpCurrentPBoarder.add(item)
+        for SubLarge in largeSet[currentDic - 1]:
+            tmp = 0
+            for SubBoarder in currentPBoarder:
+                if SubBoarder <= SubLarge:
+                    if SubBoarder in tmpCurrentPBoarder:
+                        tmpCurrentPBoarder.remove(SubBoarder)
+                        tmpCurrentPBoarder.add(SubLarge)
+                        tmp = 1
+            if tmp == 0:
+                tmpCurrentPBoarder.add(SubLarge)
+    return tmpCurrentPBoarder
