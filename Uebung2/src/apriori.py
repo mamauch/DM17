@@ -91,7 +91,6 @@ def runApriori(data_iter, minSupport):
         currentPBoarder = calculateKPositivBoarder(currentPBoarder, largeSet, k)
 
         k = k + 1
-    print currentPBoarder
 
     def getSupport(item):
             """local function which Returns the support of an item"""
@@ -102,13 +101,16 @@ def runApriori(data_iter, minSupport):
         toRetItems.extend([(tuple(item), getSupport(item))
                            for item in value])
 
-    return toRetItems
+    return toRetItems, currentPBoarder, currentNBoarder
 
 
-def printResults(items, minSupport, name):
+def printResults(items, minSupport, name, PBoarder, NBoarder):
     """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
 
-    outString = "items;lenItems;support"
+    print ("The positive Boarder is: " + str([list(i) for i in PBoarder]))
+    print ("The negative Boarder is: " + str([list(i) for i in NBoarder]))
+
+    outString = "items;lenItems;support;PBoarder;NBoarder"
     outString += "\n"
     for item, support in sorted(items, key=lambda (item, support): support):
         outString += str(item)
@@ -116,6 +118,10 @@ def printResults(items, minSupport, name):
         outString += str(len(item))
         outString += ";"
         outString += str(support)
+        outString += ";"
+        outString += str([list(i) for i in PBoarder])
+        outString += ";"
+        outString += str([list(i) for i in NBoarder])
         outString += ";"
         outString += "\n"
         print ("item: %s , %.3f" % (str(item), support))
