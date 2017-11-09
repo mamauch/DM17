@@ -54,6 +54,9 @@ def runApriori(data_iter, minSupport):
     """
     itemSet, transactionList = getItemSetTransactionList(data_iter)
 
+    print (itemSet)
+    print (transactionList)
+
     freqSet = defaultdict(int)
     largeSet = dict()
     # Global dictionary which stores (key=n-itemSets,value=support)
@@ -72,6 +75,9 @@ def runApriori(data_iter, minSupport):
     currentNBoarder = oneNBoarder
     currentPBoarder = set()
 
+    # get 1 ClosedSet
+    currentClosedSet =
+
     currentLSet = oneCSet
     k = 2
     while(currentLSet != set([])):
@@ -89,6 +95,9 @@ def runApriori(data_iter, minSupport):
 
         # get k PBoarder
         currentPBoarder = calculateKPositivBoarder(currentPBoarder, largeSet, k)
+
+        # get closed set
+        currentClosedSet = getClosedSet(currentClosedSet, largeSet, k)
 
         k = k + 1
 
@@ -183,3 +192,16 @@ def calculateKPositivBoarder(currentPBoarder, largeSet, currentDic):
             if tmp == 0:
                 tmpCurrentPBoarder.add(SubLarge)
     return tmpCurrentPBoarder
+
+def getClosedSet(currentClosedSet, largeSet, currentDic):
+    """Function which reads from the file and yields a generator
+        An itemset is closed if none of its immediate supersets has the
+        same support as the itemset
+    """
+
+
+    with open(fname, 'rU') as file_iter:
+        for line in file_iter:
+            line_tmp = [i for (i, elem) in enumerate(line.split(",")) if int(elem)]
+            record = frozenset(line_tmp)
+            yield record
