@@ -54,9 +54,6 @@ def runApriori(data_iter, minSupport):
     """
     itemSet, transactionList = getItemSetTransactionList(data_iter)
 
-    print (itemSet)
-    print (transactionList)
-
     freqSet = defaultdict(int)
     largeSet = dict()
     # Global dictionary which stores (key=n-itemSets,value=support)
@@ -76,7 +73,10 @@ def runApriori(data_iter, minSupport):
     currentPBoarder = set()
 
     # get 1 ClosedSet
-    currentClosedSet =
+    currentClosedSet = oneCSet
+
+    # get 1 FreeSet
+    currentFreeSet = getFirstFreeSet(oneCSet, freqSet, transactionList)
 
     currentLSet = oneCSet
     k = 2
@@ -97,9 +97,15 @@ def runApriori(data_iter, minSupport):
         currentPBoarder = calculateKPositivBoarder(currentPBoarder, largeSet, k)
 
         # get closed set
-        currentClosedSet = getClosedSet(currentClosedSet, largeSet, k)
+        currentClosedSet = getClosedSet(currentClosedSet, freqSet, k)
+
+        #get free set
+        minAppear = len(transactionList)*minSupport
+        currentFreeSet = getFreeSet(currentFreeSet, freqSet, k, minAppear)
 
         k = k + 1
+    print currentClosedSet
+    print currentFreeSet
 
     def getSupport(item):
             """local function which Returns the support of an item"""
@@ -193,15 +199,55 @@ def calculateKPositivBoarder(currentPBoarder, largeSet, currentDic):
                 tmpCurrentPBoarder.add(SubLarge)
     return tmpCurrentPBoarder
 
-def getClosedSet(currentClosedSet, largeSet, currentDic):
+def getClosedSet(currentClosedSet, FreqSet, currentDic):
     """Function which reads from the file and yields a generator
         An itemset is closed if none of its immediate supersets has the
         same support as the itemset
     """
+    tmpCurrentClosedSet = set()
+    for item in currentClosedSet:
+        tmpCurrentClosedSet.add(item)
 
+    for lastKey in FreqSet.keys():
+        for currentKey in FreqSet.keys():
+            if (len(currentKey) == currentDic) & (len(lastKey) == currentDic-1):
+                if lastKey.issubset(currentKey):
+                    if FreqSet.get(currentKey) >= FreqSet.get(lastKey):
+                        if lastKey in tmpCurrentClosedSet:
+                            tmpCurrentClosedSet.remove(lastKey)
+                            tmpCurrentClosedSet.add(currentKey)
+                        else:
+                            tmpCurrentClosedSet.add(currentKey)
+    return tmpCurrentClosedSet
 
-    with open(fname, 'rU') as file_iter:
-        for line in file_iter:
-            line_tmp = [i for (i, elem) in enumerate(line.split(",")) if int(elem)]
-            record = frozenset(line_tmp)
-            yield record
+def getFirstFreeSet(oneCSet, FreqSet, transactionList):
+    """Function which reads from the file and yields a generator
+        An itemset is free if all subsets are greater
+    """
+    tmpCurrentFreeSet = set()
+    for item in oneCSet:
+        tmpCurrentFreeSet.add(item)
+
+    for key in FreqSet.keys():
+        if FreqSet.get(key) == len(transactionList):
+            tmpCurrentFreeSet.remove(key)
+    return tmpCurrentFreeSet
+
+def getFreeSet(currentFreeSet, FreqSet, currentDic, minAppear):
+    """Function which reads from the file and yields a generator
+        An itemset is free if all subsets are greater
+    """
+    tmpCurrentFreeSet = set()
+    for item in currentFreeSet:
+        tmpCurrentFreeSet.add(item)
+
+    for currentKey in FreqSet.keys():
+        if len(currentKey) == currentDic:
+            listOfSupportOfSubs = []
+            for lastKey in FreqSet.keys():
+                if len(lastKey) == currentDic - 1:
+                    if lastKey.issubset(currentKey):
+                        listOfSupportOfSubs.append(FreqSet.get(lastKey))
+            if (FreqSet.get(currentKey) < min(listOfSupportOfSubs)) & (FreqSet.get(currentKey) >= minAppear):
+                tmpCurrentFreeSet.add(currentKey)
+    return tmpCurrentFreeSet
