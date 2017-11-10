@@ -124,7 +124,7 @@ def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet
     print ("The negative Boarder is: " + str([list(i) for i in NBoarder]))
 
     print ("The ClosedSet is: " + str([[list(key), ClosedSet.get(key)] for key in ClosedSet.keys()]))
-    print ("The FreeSet is: " + str([list(i) for i in FreeSet]))
+    print ("The FreeSet is: " + str([[list(key), FreeSet.get(key)] for key in FreeSet.keys()]))
 
     outString = "items;lenItems;support;PBoarder;NBoarder;ClosedSet;FreeSet"
     outString += "\n"
@@ -245,14 +245,13 @@ def getFirstFreeSet(oneCSet, freqSet, transactionList):
             tmpCurrentFreeSet[key] = freqSet.get(key)
     return tmpCurrentFreeSet
 
-# ToDo: Here need to be changed to defaultdict
 def getFreeSet(currentFreeSet, freqSet, currentDic, minAppear):
     """Function which reads from the file and yields a generator
         An itemset is free if all subsets are greater
     """
-    tmpCurrentFreeSet = set()
-    for item in currentFreeSet:
-        tmpCurrentFreeSet.add(item)
+    tmpCurrentFreeSet = defaultdict(int)
+    for key in currentFreeSet.keys():
+        tmpCurrentFreeSet[key] = currentFreeSet.get(key)
 
     for currentKey in freqSet.keys():
         if len(currentKey) == currentDic:
@@ -262,5 +261,5 @@ def getFreeSet(currentFreeSet, freqSet, currentDic, minAppear):
                     if lastKey.issubset(currentKey):
                         listOfSupportOfSubs.append(freqSet.get(lastKey))
             if (freqSet.get(currentKey) < min(listOfSupportOfSubs)) & (freqSet.get(currentKey) >= minAppear):
-                tmpCurrentFreeSet.add(currentKey)
+                tmpCurrentFreeSet[currentKey] = freqSet.get(currentKey)
     return tmpCurrentFreeSet
