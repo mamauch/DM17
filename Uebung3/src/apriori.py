@@ -245,6 +245,7 @@ def getFirstFreeSet(oneCSet, freqSet, transactionList):
             tmpCurrentFreeSet[key] = freqSet.get(key)
     return tmpCurrentFreeSet
 
+# ToDo: Here need to be changed to defaultdict
 def getFreeSet(currentFreeSet, freqSet, currentDic, minAppear):
     """Function which reads from the file and yields a generator
         An itemset is free if all subsets are greater
