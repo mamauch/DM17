@@ -73,7 +73,7 @@ def runApriori(data_iter, minSupport):
     currentPBoarder = set()
 
     # get 1 ClosedSet
-    currentClosedSet = oneCSet
+    currentClosedSet = getFirstClosedSet(freqSet)
 
     # get 1 FreeSet
     currentFreeSet = getFirstFreeSet(oneCSet, freqSet, transactionList)
@@ -104,6 +104,8 @@ def runApriori(data_iter, minSupport):
         currentFreeSet = getFreeSet(currentFreeSet, freqSet, k, minAppear)
 
         k = k + 1
+
+    print currentClosedSet
 
     def getSupport(item):
             """local function which Returns the support of an item"""
@@ -145,7 +147,7 @@ def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet
         outString += ";"
         outString += "\n"
         print ("item: %s , %.3f" % (str(item), support))
-    with open("../output/" + name + "_" + str(minSupport) + ".csv", "w") as output:
+    with open("../output_nr1/" + name + "_" + str(minSupport) + ".csv", "w") as output:
         output.write(outString)
 
 
@@ -204,14 +206,21 @@ def calculateKPositivBoarder(currentPBoarder, largeSet, currentDic):
                 tmpCurrentPBoarder.add(SubLarge)
     return tmpCurrentPBoarder
 
+def getFirstClosedSet(freqSet):
+    tmpCurrentClosedSet = defaultdict(int)
+    for key in freqSet.keys():
+        if len(key) == 1:
+            tmpCurrentClosedSet[key] = freqSet.get(key)
+    return tmpCurrentClosedSet
+
 def getClosedSet(currentClosedSet, FreqSet, currentDic):
     """Function which reads from the file and yields a generator
         An itemset is closed if none of its immediate supersets has the
         same support as the itemset
     """
-    tmpCurrentClosedSet = set()
-    for item in currentClosedSet:
-        tmpCurrentClosedSet.add(item)
+    tmpCurrentClosedSet = defaultdict(int)
+    for key in currentClosedSet.keys():
+        tmpCurrentClosedSet[key] = currentClosedSet.get(key)
 
     for lastKey in FreqSet.keys():
         for currentKey in FreqSet.keys():
@@ -219,10 +228,13 @@ def getClosedSet(currentClosedSet, FreqSet, currentDic):
                 if lastKey.issubset(currentKey):
                     if FreqSet.get(currentKey) >= FreqSet.get(lastKey):
                         if lastKey in tmpCurrentClosedSet:
-                            tmpCurrentClosedSet.remove(lastKey)
-                            tmpCurrentClosedSet.add(currentKey)
+                            tmpCurrentClosedSet.pop(lastKey)
+                            tmpCurrentClosedSet[lastKey] = FreqSet.get(lastKey)
+                            #tmpCurrentClosedSet.remove(lastKey)
+                            #tmpCurrentClosedSet.add(currentKey)
                         else:
-                            tmpCurrentClosedSet.add(currentKey)
+                            tmpCurrentClosedSet[lastKey] = FreqSet.get(lastKey)
+                            #tmpCurrentClosedSet.add(currentKey)
     return tmpCurrentClosedSet
 
 def getFirstFreeSet(oneCSet, FreqSet, transactionList):
