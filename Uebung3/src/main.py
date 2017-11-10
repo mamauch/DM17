@@ -30,9 +30,9 @@ def main():
 
     minSupport = options.minS
 
-    items, PBoarder, NBoarder = runApriori(inFile, minSupport)
+    items, PBoarder, NBoarder, ClosedSet, FreeSet = runApriori(inFile, minSupport)
 
-    printResults(items, minSupport, options.input.split("/")[2], PBoarder, NBoarder)
+    printResults(items, minSupport, options.input.split("/")[2], PBoarder, NBoarder, ClosedSet, FreeSet)
 
 if __name__ == "__main__":
     import profile

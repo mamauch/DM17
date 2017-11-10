@@ -104,8 +104,6 @@ def runApriori(data_iter, minSupport):
         currentFreeSet = getFreeSet(currentFreeSet, freqSet, k, minAppear)
 
         k = k + 1
-    print currentClosedSet
-    print currentFreeSet
 
     def getSupport(item):
             """local function which Returns the support of an item"""
@@ -116,16 +114,19 @@ def runApriori(data_iter, minSupport):
         toRetItems.extend([(tuple(item), getSupport(item))
                            for item in value])
 
-    return toRetItems, currentPBoarder, currentNBoarder
+    return toRetItems, currentPBoarder, currentNBoarder, currentClosedSet, currentFreeSet
 
 
-def printResults(items, minSupport, name, PBoarder, NBoarder):
+def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet):
     """prints the generated itemsets sorted by support and the confidence rules sorted by confidence"""
 
     print ("The positive Boarder is: " + str([list(i) for i in PBoarder]))
     print ("The negative Boarder is: " + str([list(i) for i in NBoarder]))
 
-    outString = "items;lenItems;support;PBoarder;NBoarder"
+    print ("The ClosedSet is: " + str([list(i) for i in ClosedSet]))
+    print ("The FreeSet is: " + str([list(i) for i in FreeSet]))
+
+    outString = "items;lenItems;support;PBoarder;NBoarder;ClosedSet;FreeSet"
     outString += "\n"
     for item, support in sorted(items, key=lambda (item, support): support):
         outString += str(item)
@@ -137,6 +138,10 @@ def printResults(items, minSupport, name, PBoarder, NBoarder):
         outString += str([list(i) for i in PBoarder])
         outString += ";"
         outString += str([list(i) for i in NBoarder])
+        outString += ";"
+        outString += str([list(i) for i in ClosedSet])
+        outString += ";"
+        outString += str([list(i) for i in FreeSet])
         outString += ";"
         outString += "\n"
         print ("item: %s , %.3f" % (str(item), support))
