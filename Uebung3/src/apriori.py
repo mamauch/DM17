@@ -97,15 +97,13 @@ def runApriori(data_iter, minSupport):
         currentPBoarder = calculateKPositivBoarder(currentPBoarder, largeSet, k)
 
         # get closed set
-        currentClosedSet = getClosedSet(currentClosedSet, freqSet, k)
+        minAppear = len(transactionList)*minSupport
+        currentClosedSet = getClosedSet(currentClosedSet, freqSet, k, minAppear)
 
         #get free set
-        minAppear = len(transactionList)*minSupport
         currentFreeSet = getFreeSet(currentFreeSet, freqSet, k, minAppear)
 
         k = k + 1
-
-    print currentClosedSet
 
     def getSupport(item):
             """local function which Returns the support of an item"""
@@ -125,7 +123,7 @@ def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet
     print ("The positive Boarder is: " + str([list(i) for i in PBoarder]))
     print ("The negative Boarder is: " + str([list(i) for i in NBoarder]))
 
-    print ("The ClosedSet is: " + str([list(i) for i in ClosedSet]))
+    print ("The ClosedSet is: " + str([[list(key), ClosedSet.get(key)] for key in ClosedSet.keys()]))
     print ("The FreeSet is: " + str([list(i) for i in FreeSet]))
 
     outString = "items;lenItems;support;PBoarder;NBoarder;ClosedSet;FreeSet"
@@ -147,7 +145,7 @@ def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet
         outString += ";"
         outString += "\n"
         print ("item: %s , %.3f" % (str(item), support))
-    with open("../output_nr1/" + name + "_" + str(minSupport) + ".csv", "w") as output:
+    with open("../output/" + name + "_" + str(minSupport) + ".csv", "w") as output:
         output.write(outString)
 
 
@@ -213,7 +211,7 @@ def getFirstClosedSet(freqSet):
             tmpCurrentClosedSet[key] = freqSet.get(key)
     return tmpCurrentClosedSet
 
-def getClosedSet(currentClosedSet, FreqSet, currentDic):
+def getClosedSet(currentClosedSet, FreqSet, currentDic, minAppear):
     """Function which reads from the file and yields a generator
         An itemset is closed if none of its immediate supersets has the
         same support as the itemset
@@ -226,14 +224,14 @@ def getClosedSet(currentClosedSet, FreqSet, currentDic):
         for currentKey in FreqSet.keys():
             if (len(currentKey) == currentDic) & (len(lastKey) == currentDic-1):
                 if lastKey.issubset(currentKey):
-                    if FreqSet.get(currentKey) >= FreqSet.get(lastKey):
+                    if (FreqSet.get(currentKey) >= FreqSet.get(lastKey)) & (FreqSet.get(currentKey) >=  minAppear):
                         if lastKey in tmpCurrentClosedSet:
                             tmpCurrentClosedSet.pop(lastKey)
-                            tmpCurrentClosedSet[lastKey] = FreqSet.get(lastKey)
+                            tmpCurrentClosedSet[currentKey] = FreqSet.get(currentKey)
                             #tmpCurrentClosedSet.remove(lastKey)
                             #tmpCurrentClosedSet.add(currentKey)
                         else:
-                            tmpCurrentClosedSet[lastKey] = FreqSet.get(lastKey)
+                            tmpCurrentClosedSet[currentKey] = FreqSet.get(currentKey)
                             #tmpCurrentClosedSet.add(currentKey)
     return tmpCurrentClosedSet
 
