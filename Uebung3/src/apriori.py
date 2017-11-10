@@ -211,7 +211,7 @@ def getFirstClosedSet(freqSet):
             tmpCurrentClosedSet[key] = freqSet.get(key)
     return tmpCurrentClosedSet
 
-def getClosedSet(currentClosedSet, FreqSet, currentDic, minAppear):
+def getClosedSet(currentClosedSet, freqSet, currentDic, minAppear):
     """Function which reads from the file and yields a generator
         An itemset is closed if none of its immediate supersets has the
         same support as the itemset
@@ -220,35 +220,32 @@ def getClosedSet(currentClosedSet, FreqSet, currentDic, minAppear):
     for key in currentClosedSet.keys():
         tmpCurrentClosedSet[key] = currentClosedSet.get(key)
 
-    for lastKey in FreqSet.keys():
-        for currentKey in FreqSet.keys():
+    for lastKey in freqSet.keys():
+        for currentKey in freqSet.keys():
             if (len(currentKey) == currentDic) & (len(lastKey) == currentDic-1):
                 if lastKey.issubset(currentKey):
-                    if (FreqSet.get(currentKey) >= FreqSet.get(lastKey)) & (FreqSet.get(currentKey) >=  minAppear):
+                    if (freqSet.get(currentKey) >= freqSet.get(lastKey)) & (freqSet.get(currentKey) >=  minAppear):
                         if lastKey in tmpCurrentClosedSet:
                             tmpCurrentClosedSet.pop(lastKey)
-                            tmpCurrentClosedSet[currentKey] = FreqSet.get(currentKey)
+                            tmpCurrentClosedSet[currentKey] = freqSet.get(currentKey)
                             #tmpCurrentClosedSet.remove(lastKey)
                             #tmpCurrentClosedSet.add(currentKey)
                         else:
-                            tmpCurrentClosedSet[currentKey] = FreqSet.get(currentKey)
+                            tmpCurrentClosedSet[currentKey] = freqSet.get(currentKey)
                             #tmpCurrentClosedSet.add(currentKey)
     return tmpCurrentClosedSet
 
-def getFirstFreeSet(oneCSet, FreqSet, transactionList):
+def getFirstFreeSet(oneCSet, freqSet, transactionList):
     """Function which reads from the file and yields a generator
         An itemset is free if all subsets are greater
     """
-    tmpCurrentFreeSet = set()
-    for item in oneCSet:
-        tmpCurrentFreeSet.add(item)
-
-    for key in FreqSet.keys():
-        if FreqSet.get(key) == len(transactionList):
-            tmpCurrentFreeSet.remove(key)
+    tmpCurrentFreeSet = defaultdict(int)
+    for key in freqSet.keys():
+        if (len(key) == 1) & (not freqSet.get(key) == len(transactionList)):
+            tmpCurrentFreeSet[key] = freqSet.get(key)
     return tmpCurrentFreeSet
 
-def getFreeSet(currentFreeSet, FreqSet, currentDic, minAppear):
+def getFreeSet(currentFreeSet, freqSet, currentDic, minAppear):
     """Function which reads from the file and yields a generator
         An itemset is free if all subsets are greater
     """
@@ -256,13 +253,13 @@ def getFreeSet(currentFreeSet, FreqSet, currentDic, minAppear):
     for item in currentFreeSet:
         tmpCurrentFreeSet.add(item)
 
-    for currentKey in FreqSet.keys():
+    for currentKey in freqSet.keys():
         if len(currentKey) == currentDic:
             listOfSupportOfSubs = []
-            for lastKey in FreqSet.keys():
+            for lastKey in freqSet.keys():
                 if len(lastKey) == currentDic - 1:
                     if lastKey.issubset(currentKey):
-                        listOfSupportOfSubs.append(FreqSet.get(lastKey))
-            if (FreqSet.get(currentKey) < min(listOfSupportOfSubs)) & (FreqSet.get(currentKey) >= minAppear):
+                        listOfSupportOfSubs.append(freqSet.get(lastKey))
+            if (freqSet.get(currentKey) < min(listOfSupportOfSubs)) & (freqSet.get(currentKey) >= minAppear):
                 tmpCurrentFreeSet.add(currentKey)
     return tmpCurrentFreeSet
