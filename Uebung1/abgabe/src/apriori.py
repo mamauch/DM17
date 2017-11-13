@@ -105,7 +105,7 @@ def printResults(items, minSupport, name):
         outString += ";"
         outString += "\n"
         print ("item: %s , %.3f" % (str(item), support))
-    with open("../output/" + name + "_" + str(minSupport) + ".csv", "w") as output:
+    with open("../output_nr1/" + name + "_" + str(minSupport) + ".csv", "w") as output:
         output.write(outString)
 
 
