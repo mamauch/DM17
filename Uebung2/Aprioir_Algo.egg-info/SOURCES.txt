@@ -1,0 +1,6 @@
+README.rst
+setup.py
+Aprioir_Algo.egg-info/PKG-INFO
+Aprioir_Algo.egg-info/SOURCES.txt
+Aprioir_Algo.egg-info/dependency_links.txt
+Aprioir_Algo.egg-info/top_level.txt

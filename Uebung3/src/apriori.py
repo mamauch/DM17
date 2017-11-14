@@ -139,7 +139,7 @@ def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet
         outString += ";"
         outString += str([list(i) for i in NBoarder])
         outString += ";"
-        outString += str([list(i) for i in ClosedSet])
+        outString += str([[list(key) , ClosedSet.get(key)] for key in ClosedSet.keys()])
         outString += ";"
         outString += str([list(i) for i in FreeSet])
         outString += ";"
