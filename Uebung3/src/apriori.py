@@ -141,7 +141,7 @@ def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet
         outString += ";"
         outString += str([[list(key) , ClosedSet.get(key)] for key in ClosedSet.keys()])
         outString += ";"
-        outString += str([list(i) for i in FreeSet])
+        outString += str([[list(key), FreeSet.get(key)] for key in FreeSet.keys()])
         outString += ";"
         outString += "\n"
         print ("item: %s , %.3f" % (str(item), support))
