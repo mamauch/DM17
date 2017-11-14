@@ -96,16 +96,16 @@ def printResults(items, minSupport, name):
 
     outString = "items;lenItems;support"
     outString += "\n"
-    for item, support in sorted(items, key=lambda (item, support): support):
-        outString += str(item)
+    for item in items:
+        outString += str(item[0])
         outString += ";"
-        outString += str(len(item))
+        outString += str(len(item[0]))
         outString += ";"
-        outString += str(support)
+        outString += str(item[1])
         outString += ";"
         outString += "\n"
-        print ("item: %s , %.3f" % (str(item), support))
-    with open("../output_nr1/" + name + "_" + str(minSupport) + ".csv", "w") as output:
+        print ("item: %s , %.3f" % (str(item[0]), item[1]))
+    with open("../output/" + name + "_" + str(minSupport) + ".csv", "w") as output:
         output.write(outString)
 
 

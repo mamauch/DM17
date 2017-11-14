@@ -72,11 +72,9 @@ def runApriori(data_iter, minSupport):
     currentNBoarder = oneNBoarder
     currentPBoarder = set()
 
-    # get 1 ClosedSet
-    currentClosedSet = getFirstClosedSet(freqSet)
-
     # get 1 FreeSet
     currentFreeSet = getFirstFreeSet(oneCSet, freqSet, transactionList)
+    currentClosedSet = defaultdict(int)
 
     currentLSet = oneCSet
     k = 2
@@ -105,6 +103,9 @@ def runApriori(data_iter, minSupport):
 
         k = k + 1
 
+    # get 1 ClosedSet
+    currentClosedSet = getLastClosedSet(currentClosedSet, freqSet, k, minAppear)
+
     def getSupport(item):
             """local function which Returns the support of an item"""
             return float(freqSet[item])/len(transactionList)
@@ -128,12 +129,12 @@ def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet
 
     outString = "items;lenItems;support;PBoarder;NBoarder;ClosedSet;FreeSet"
     outString += "\n"
-    for item, support in sorted(items, key=lambda (item, support): support):
-        outString += str(item)
+    for item in items:
+        outString += str(item[0])
         outString += ";"
-        outString += str(len(item))
+        outString += str(len(item[0]))
         outString += ";"
-        outString += str(support)
+        outString += str(item[1])
         outString += ";"
         outString += str([list(i) for i in PBoarder])
         outString += ";"
@@ -144,7 +145,7 @@ def printResults(items, minSupport, name, PBoarder, NBoarder, ClosedSet, FreeSet
         outString += str([[list(key), FreeSet.get(key)] for key in FreeSet.keys()])
         outString += ";"
         outString += "\n"
-        print ("item: %s , %.3f" % (str(item), support))
+        print ("item: %s , %.3f" % (str(item[0]), item[1]))
     with open("../output/" + name + "_" + str(minSupport) + ".csv", "w") as output:
         output.write(outString)
 
@@ -204,12 +205,12 @@ def calculateKPositivBoarder(currentPBoarder, largeSet, currentDic):
                 tmpCurrentPBoarder.add(SubLarge)
     return tmpCurrentPBoarder
 
-def getFirstClosedSet(freqSet):
-    tmpCurrentClosedSet = defaultdict(int)
+def getLastClosedSet(tmpCurrentClosedSet, freqSet, currentDic, minAppear):
     for key in freqSet.keys():
-        if len(key) == 1:
+        if (len(key) == currentDic - 2) & (freqSet[key] >= minAppear):
             tmpCurrentClosedSet[key] = freqSet.get(key)
     return tmpCurrentClosedSet
+
 
 def getClosedSet(currentClosedSet, freqSet, currentDic, minAppear):
     """Function which reads from the file and yields a generator
@@ -220,19 +221,20 @@ def getClosedSet(currentClosedSet, freqSet, currentDic, minAppear):
     for key in currentClosedSet.keys():
         tmpCurrentClosedSet[key] = currentClosedSet.get(key)
 
-    for lastKey in freqSet.keys():
+    tmpControlSet = set()
+
+    for nextKey in freqSet.keys():
         for currentKey in freqSet.keys():
-            if (len(currentKey) == currentDic) & (len(lastKey) == currentDic-1):
-                if lastKey.issubset(currentKey):
-                    if (freqSet.get(currentKey) >= freqSet.get(lastKey)) & (freqSet.get(currentKey) >=  minAppear):
-                        if lastKey in tmpCurrentClosedSet:
-                            tmpCurrentClosedSet.pop(lastKey)
-                            tmpCurrentClosedSet[currentKey] = freqSet.get(currentKey)
-                            #tmpCurrentClosedSet.remove(lastKey)
-                            #tmpCurrentClosedSet.add(currentKey)
-                        else:
-                            tmpCurrentClosedSet[currentKey] = freqSet.get(currentKey)
-                            #tmpCurrentClosedSet.add(currentKey)
+            if (len(currentKey) == currentDic-1) & (len(nextKey) == currentDic):
+                if currentKey.issubset(nextKey):
+                    if (freqSet.get(currentKey) == freqSet.get(nextKey)) & (freqSet.get(currentKey) >=  minAppear):
+                        tmpControlSet.add(currentKey)
+                    if (freqSet.get(currentKey) > freqSet.get(nextKey)) & (freqSet.get(currentKey) >=  minAppear):
+                        tmpCurrentClosedSet[currentKey] = freqSet.get(currentKey)
+
+    for key in tmpControlSet:
+        if key in tmpCurrentClosedSet.keys():
+            tmpCurrentClosedSet.pop(key)
     return tmpCurrentClosedSet
 
 def getFirstFreeSet(oneCSet, freqSet, transactionList):
