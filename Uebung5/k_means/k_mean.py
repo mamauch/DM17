@@ -1,8 +1,36 @@
-
 import sys
 import random
 from math import sqrt
 import matplotlib.pyplot as plt
+from sklearn import metrics
+from sklearn.metrics import accuracy_score
+import numpy as np
+
+# Idea from http://www.caner.io/purity-in-python.html
+def purityScore(clusters, classes):
+    """
+    Calculate the purity score for the given cluster assignments and ground truth classes
+    
+    :param clusters: the cluster assignments array
+    :type clusters: numpy.array
+    
+    :param classes: the ground truth classes
+    :type classes: numpy.array
+    
+    :returns: the purity score
+    :rtype: float
+    """
+    
+    A = np.c_[(clusters,classes)]
+
+    n_accurate = 0.
+
+    for j in np.unique(A[:,0]):
+        z = A[A[:,0] == j, 1]
+        x = np.argmax(np.bincount(z))
+        n_accurate += len(z[z == x])
+
+    return n_accurate / A.shape[0]
 
 def getDistanceDic(list_of_list, centers):
     dic = {}
@@ -48,12 +76,12 @@ def plotCurrentClusters(current_cluster, centers):
     ax.set_ylabel('y')
     plt.colorbar(scatter)
     fig.show()
-    input()
+    raw_input()
 
 argsys = sys.argv
 
-filename = argsys[1]    # erster kommandozeilen parameter
-k = argsys[2]           # zweiter kommandozeilen parameter
+filename = argsys[2]    # erster kommandozeilen parameter
+maxk = argsys[1]           # maximales k 
 
 
 
@@ -72,49 +100,70 @@ for key in true_cluster.keys():
     for point in list_of_list:
         if point[2] == key:
             true_cluster[key].append([point[0], point[1]])
-print(true_cluster)
-plotCurrentClusters(true_cluster, getCurrentCenters(true_cluster))
 
+#plotCurrentClusters(true_cluster, getCurrentCenters(true_cluster))
 
-random_centers = []
+bestRANDK = 0
+bestNormalizedMutualInformationK = 0
+bestPurityOfClustersK = 0
+currentRAND = 0
+currentNormalizedMutualInformation = 0
+currentPurityOfClusters = 0
+for k in range(int(maxk)):
+    random_centers = []
 
-random.choice(list_of_list)
-random_centers.append(random.choice(list_of_list))
-
-for i in range(0,int(k)-1):
+    random.choice(list_of_list)
     random_centers.append(random.choice(list_of_list))
 
-print(random_centers)
+    for i in range(0,int(k+1)-1):
+        random_centers.append(random.choice(list_of_list))
 
-#a = abs(list_of_list[0][0] - random_centers[0][0])
-#for i in range(0,len(list_of_list)-1):
-
-
-
-dic = getDistanceDic(list_of_list, random_centers)
+    dic = getDistanceDic(list_of_list, random_centers)
 
 
-current_cluster = getDicOfCurrentCluster(k, dic, list_of_list)
+    current_cluster = getDicOfCurrentCluster(k+1, dic, list_of_list)
 
-current_centers = getCurrentCenters(current_cluster)
-
-print(current_centers)
-
-checkCenters = True
-while checkCenters:
-    old_centers = []
-    for centers in current_centers:
-        old_centers.append(centers)
-
-    dic = getDistanceDic(list_of_list, current_centers)
-    current_cluster = getDicOfCurrentCluster(k, dic, list_of_list)
     current_centers = getCurrentCenters(current_cluster)
 
+    checkCenters = True
+    while checkCenters:
+        old_centers = []
+        for centers in current_centers:
+            old_centers.append(centers)
+
+        dic = getDistanceDic(list_of_list, current_centers)
+        current_cluster = getDicOfCurrentCluster(k+1, dic, list_of_list)
+        current_centers = getCurrentCenters(current_cluster)
 
 
-    plotCurrentClusters(current_cluster, current_centers)
 
-    if old_centers == current_centers:
-        checkCenters = False
+        #plotCurrentClusters(current_cluster, current_centers)
+
+        if old_centers == current_centers:
+            checkCenters = False
 
 
+    ture_lable = []
+    lable = []
+    for ckey in current_cluster.keys():
+        for cpoint in current_cluster[ckey]:
+            for tkey in true_cluster.keys():
+                for tpoint in true_cluster[tkey]:
+                    if cpoint == tpoint:
+                        ture_lable.append(tkey)
+                        lable.append(ckey+1)
+    if currentRAND < metrics.adjusted_rand_score(ture_lable, lable):
+        bestRANDK = k+1
+        currentRAND = metrics.adjusted_rand_score(ture_lable, lable)
+
+    if currentPurityOfClusters < purityScore(ture_lable, lable):
+        bestPurityOfClustersK = k+1
+        currentPurityOfClusters = purityScore(ture_lable, lable)
+
+    if currentNormalizedMutualInformation < metrics.normalized_mutual_info_score(ture_lable, lable):
+        bestNormalizedMutualInformationK = k+1
+        currentNormalizedMutualInformation = metrics.normalized_mutual_info_score(ture_lable, lable)
+
+print ("Best RAND k:" + str(bestRANDK))
+print ("Best NormalizedMutualInformation k:" + str(bestNormalizedMutualInformationK))
+print ("Best PurityOfClusters k:" + str(bestPurityOfClustersK))
