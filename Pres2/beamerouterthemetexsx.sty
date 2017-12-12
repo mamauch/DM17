@@ -1,0 +1,128 @@
+%===================================================================================
+%===================================================================================
+% Footline
+\def\beamer@theme@footline@empty{}
+
+
+\def\beamer@theme@footline@authorinstitutetitle{
+  \defbeamertemplate*{footline}{miniframes theme}
+  {%
+    \begin{beamercolorbox}[colsep=0.5pt]{upper separation line foot}
+    \end{beamercolorbox}
+    \hbox{
+		\hspace{-0.2cm}
+		
+		\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.5ex,dp=1.125ex,%
+			leftskip=.3cm,rightskip=.3cm]{author in head/foot}%
+			{\usebeamerfont{author in head/foot}\insertshortauthor}%
+		\end{beamercolorbox}%
+		
+		\begin{beamercolorbox}[wd=.675\paperwidth,ht=2.5ex,dp=1.125ex,%
+			leftskip=.3cm,rightskip=.3cm]{title in head/foot}%
+			\hfill
+			{\usebeamerfont{title in head/foot}\insertshortinstitute}%
+		\end{beamercolorbox}}%
+		
+		\begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+			leftskip=.3cm,rightskip=.3cm plus1fil]{section in head/foot}%
+			{\insertshorttitle\hfill\insertframenumber{}/\inserttotalframenumber}%
+		\end{beamercolorbox}
+		
+		\begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+    \end{beamercolorbox}
+  }
+}
+
+\def\beamer@theme@footline@authorinstitute{
+  \defbeamertemplate*{footline}{miniframes theme}
+  {%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    \end{beamercolorbox}
+	\begin{beamercolorbox}[]{}%[ht=2.5ex,dp=1.125ex, leftskip=.3cm,rightskip=.3cm plus1fil]{}%{author in head/foot}
+		\begin{tikzpicture}
+			\useasboundingbox[fill=white] (0,0) rectangle(\the\paperwidth,.3);
+			\draw[fill=jgudarkgrey,draw=none] (0,0) rectangle (.25\paperwidth,.3) node[midway,text=white] {\insertshortauthor};
+			\draw[fill=jgulightgrey,draw=none] (.25\paperwidth,0) rectangle (.9\paperwidth,.3) node[midway,text=white] {\insertshortinstitute\hspace{2cm}\insertdate};
+			\draw[fill=jgured,draw=none] (.9\paperwidth,0) rectangle (\the\paperwidth,.3) node[midway,text=white] {\insertframenumber{}/\inserttotalframenumber};
+		\end{tikzpicture}
+     \end{beamercolorbox}%	
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+    \end{beamercolorbox}
+  }
+}
+
+%
+%\def\beamer@theme@footline@authortitle{
+  %\defbeamertemplate*{footline}{miniframes theme}
+  %{%
+    %\begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    %\end{beamercolorbox}
+    %\begin{beamercolorbox}[wd=.333333\paperwidth, ht=2.5ex,dp=1.125ex,%
+      %leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+      %\leavevmode{\usebeamerfont{title in head/foot}\insertshorttitle}%
+      %\hfill%
+      %{\usebeamerfont{author in head/foot}\usebeamercolor[fg]{author in head/foot}\insertshortauthor}%
+    %\end{beamercolorbox}%
+    %\begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+    %\end{beamercolorbox}
+  %}
+%}
+%\def\beamer@theme@footline@institutetitle{
+  %\defbeamertemplate*{footline}{miniframes theme}
+  %{%
+    %\begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    %\end{beamercolorbox}
+    %\begin{beamercolorbox}[wd=.333333\paperwidth, ht=2.5ex,dp=1.125ex,%
+      %leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+      %\leavevmode{\usebeamerfont{title in head/foot}\insertshorttitle}%
+      %\hfill%
+      %{\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}%
+    %\end{beamercolorbox}%
+    %\begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+    %\end{beamercolorbox}
+  %}
+%}
+
+\newif\ifbeamer@theme@subsection
+\beamer@theme@subsectiontrue
+
+\DeclareOptionBeamer{footline}{\csname beamer@theme@footline@#1\endcsname}
+\DeclareOptionBeamer{subsection}[true]{\csname beamer@theme@subsection#1\endcsname}
+\ProcessOptionsBeamer
+
+%\mode<presentation>
+
+%===================================================================================
+%===================================================================================
+% Frametitle / Head
+\defbeamertemplate*{frametitle}{texsx}
+{
+%\vskip.1cm% Distance between upper slide edge to frame title
+\hspace{-0.25cm}
+\begin{beamercolorbox}[wd=\the\paperwidth,ht=1.35cm]{frametitle} 
+	\begin{tikzpicture}
+		\useasboundingbox[fill=white] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+		%Background navigation sections
+		\draw[fill=jgudarkgrey,draw=none] (1.405,1) rectangle (1.05\paperwidth,1.4) node[midway,text=white] {\tiny\insertnavigation{.75\paperwidth}};		
+		%JGU logo
+		\node[anchor=south west, inner sep=0pt] (zero) at (0,-0.005)
+		{\includegraphics[height=1.4cm, keepaspectratio]{Logos/jgu_logo_kasten.pdf}};
+		%frame(sub)title background
+		\draw[fill=jgulightgrey,draw=none] (1.405,0) rectangle (1.05\paperwidth,1);
+		%frame(sub)title
+		\ifx\insertframesubtitle\@empty%
+			\node[inner sep = 0pt,anchor=west,white,font=\large] at (1.6,.5) {\insertframetitle};
+		\else%
+			{
+			\node[inner sep = 0pt,anchor=west,text=white,font=\large] at (1.6,.75) {\insertframetitle};
+			\node[inner sep = 0pt,anchor=west,text=white,font=\small] at (1.6,.25) {\insertframesubtitle};
+			}
+		\fi
+		%\node[anchor=south east,inner sep=0pt] (right) at (1.007\paperwidth,0.0) {\insertlogo};
+	
+  \end{tikzpicture}
+\end{beamercolorbox}
+}
+
+
+\mode<all>

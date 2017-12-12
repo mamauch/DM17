@@ -1,0 +1,160 @@
+\documentclass[a4paper]{article}
+\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+
+\title{Clustering}
+\author{Manuel Mauch, Marius Köppel}
+\date{12.12.2017}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{amssymb}
+
+%===== Mathe-Packages ======
+  \usepackage{amsmath, amssymb, amsfonts}   % Mathematische Features der American Mathematical
+  \usepackage{cancel}
+  \usepackage[output-decimal-marker={,},    % Deutsche Dezimaltrennung mit Komma
+    separate-uncertainty = true,        % Fehlerangabe: \SI{3(2)}{\tesla}
+    per-mode=fraction,              % Einheiten als Bruch darstellen
+    exponent-product = \cdot,         % Exponentialschreibweise mit Malzeichen \SI{3e8}{\tesla}
+    math-ohm,
+    range-phrase = -          % Option für Bereichsangabe \SIrange{3}{4}{\tesla}
+    ]{siunitx}                
+                % Elementar wichtig für Einheiten \siunit{3}{\milli\meter}          % \unit{\tesla}, \num{<Zahl>}
+
+%\textwidth15cm
+
+\begin{document}
+
+\maketitle
+
+\section{Agglomerative and Divisive Clustering Aufgabe}
+1972 wurde von Kobayashi und Maskawa die CP-Verletzung bei $K^0_L \rightarrow \pi^+ \pi^-$ enteckte. Diese ist nur möglich wenn es eine 3. Quark-Familie gibt. Kurze Zeit später wurde 1977 das Bottom-Quark gefunden, welches das erste Quark der 3. Familie ist. Darauf hin wurde am Tevatron nach dem Top-Quark gesucht, welches 1995 entdeckt wurde. Die Vermessung des Top-Quarks und speziell die Vermessung seiner Masse ist gerade Forschungsgegenstand am Large-Hadron-Collider (LHC). Dies liegt daran, dass im Standartmodell der Teilchenphysik (SM) die Massen der Teilchen freie Parameter sind, welche experimentell bestimmt werden müsssen. Nach der Bestimmung dieser Parameter können durch weitere Rechnungen Wirkungsquerschnitte anderer Prozesse berechnet werden, welche wiederrum durch Experimente untersucht werden können. Bei Unterschieden dieser Wirkungsquerschnitte kann neue Physik entdeckt werden.
+
+\section{K-means Aufgabe}
+Am LHC werden die Top-Quark-Paare hauptsächlich über Strong-Interaction produziert. Dabei ist der Mechanismus auf Parton-Level Quark-Antiquark-Annihilation und Gluon-Fusion. Bei steigender Schwerpunktsenergie $\sqrt{s}$ erhöht sich der Anteil der Produktion über Gluon-Fusion.
+
+\section{EM Aufgabe}
+Im SM zerfällt das Top-Quark hauptsächlich in ein W-Boson und ein Bottom-Quark. Somit ist der Zerfall von Top-Quark-Paaren durch die Zerfälle der $W^{(+,-)}$-Bosonen charakterisiert. Ein W-Boson kann prinzipiell in ein Lepton ($\tau, \mu \textrm{ oder } e$) oder hadronisch in ein Quark-Antiquark-Paar zerfallen. Dadurch ergibt sich für den Zerfall des Top-Quark-Paares 3 Möglichkeiten. 
+
+\begin{itemize}
+  \item Voll-Hadronisch: Beide W-Bosonen zerfallen in ein Quark-Antiquark-Paar. Bei allen Zerfällen beträgt diese Möglichkeit 45$\%$ der Fälle. Der Untergrund ist hier recht groß.
+  \item Lepton + Jets: In 30$\%$ der Fälle zerfällt eins der W-Bosonen in ein $\mu \textrm{ oder ein } e$ und das andere in ein Quark-Antiquark-Paar. Dieser Zerfall hat ein recht moderaten Untergrund, wodurch er auch in der später beschriebenen Analyse ausgewählt wurde. In 20$\%$ der Fälle zerfällt eins der W-Bosonen in ein $\tau$ und das andere in ein Quark-Antiquark-Paar. Jedoch ist der Nachweis von dem $\tau$ im Detektor nicht so einfach.
+  \item Dileptonisch: In den letzten 5$\%$ der Fälle zerfallen beide W-Bosonen in ein Lepton. Dieser Zerfall hat zwar einen recht kleinen Untergrund, jedoch ist die Anzahl der Signal-Ereignisse nicht so groß.
+\end{itemize}
+
+\subsection{Untergrund}
+Bei den Untergründen kann prinzipiell zwischen physikalischen und instrumentellen Untergründen unterscheiden werden. Physikalische Untergründe sind Prozesse die ununterscheidbar vom Signal sind. Zum Beispiel die W-Boson-Produktion mit mehreren Jets oder die Single-Top-Produktion mit Jets. Bei der Single-Top-Produktion muss gesagt werden, dass ein einzelnes Top-Quark auch durch die schwache Wechselwirkung mittels eines W-Bosons produziert werden kann. Bei den instrumentellen Untergründen handelt es sich um Rauschen im Detektor oder fehlidentifizierte Objekte. 
+
+\section{Das Experiment}
+\subsection{Der LHC}
+Die Messungen des Top-Quarks wurden hier alle am CMS-Detektor durchgeführt, welcher Proton-Proton-Kollisionen am LHC detektiert. Der LHC ist Teilchenbeschleuniger am CERN, welcher zwei gegeläufige Strahlröhren hat durch die an vier Punkten Teilchen zur Kollision gebracht werden. Bei der Top-Quark-Produktion kollidieren Protonen.
+
+\subsection{Der CMS-Detektor} 
+Der CMS-Detektor liegt in $\SI{100}{m}$ Tiefe auf der französischen Seite des LHC. Dabei ist er $\SI{21.6}{m}$ lang, hat einen Durchmesser von $\SI{14.6}{m}$ und ein Gewicht von $\SI{14 000}{t}$. Der Detektor besteht aus mehreren Schichten, welche jede für sich unterschiedliche Eigenschaften haben. Der innerste Teil des Detektors besteht aus dem Spurdetektor, welcher bis zu $\SI{4,4}{cm}$ vom Mittelpunkt des Strahlrohr entfernt liegt. Der Tracker ist $\SI{5,8}{m}$ lang und hat einen Durchmesser von $\SI{2,5}{m}$. Dabei deckt er eine Pseudorapidität von $|\eta| < 2,5$ ab. Die Pseudorapidität $\eta$ gibt den Winkel eines Vektors relativ zur Strahlachse an. Sie ist wie folgt definiert.
+
+\begin{equation}
+\eta =-\ln \left[\tan \left({\frac {\theta}{2}}\right)\right].
+\end{equation}
+Hier ist $\theta$ der Polarwinkel. Mit dem Tracker kann die Spur geladener Teilchen aufgezeichnet werden. 
+
+Das elektromagnetische Kalorimeter (ECAL) besteht aus Blei-Wolframatkristallen (PbW$O_4$). Mit seiner Hilfe ist es möglich die Energie der elektromagnetischen Kaskade von Photonen und Elektronen zu messen. 
+
+Nach dem ECAL kommt der hadronische Kalorimeter (HCAL). Dieses Bauteil wird für die Messung der Energie von stabilen, durch die starke Wechselwirkung interagierenden Teilchen außer Neutrinos, Elektronen, Myonen und Photonen, verwendet. Die Messung erfolgt durch eine alternierende Struktur von Messingplatten und Kunststoff-Szintillatoren.
+
+Nun kommt der Solenoidmagnet, welcher für die Rekonstruktion des Impulses geladener Teilchen wichtig ist. Durch ihn wird ein homogenes Magnetfeld erzeugt, welches die Teilchen auf eine Kreisbahn zwingt. Der Radius dieser Bahn ist proportional zum $p_T$ der Teilchen. 
+
+Ganz außen befinden sich die Myon-Kammern, welche im Rückführjoch der Magnetspule angebracht sind. Sie sind für die Detektierung der Myonen zuständig.
+
+\subsection{$p_T$ und $\cancel{\it{E}}_{T}$}
+Da es sich um Parton-Kollisionen handelt, ist der Anteil am longitudinalen Proton Impuls unbekannt. Außerdem sind transversale Variablen lorentzinvariant somit wird der Impuls der Teilchen in $p_T$ gemessen. 
+
+Um die Energie von Neutrinos zu bestimmen, welche vom Detektor nicht gemessen werden können, wird die Energiesumme im Kalorimeter betrachtet. Unter Annahme von Energieerhaltung wird der fehlende Term dieser Energiesumme als fehlende transversale Energie bezeichnet. Die Richtung dieser Energie ergibt sich aus den Ortskoordinaten des Detektors. Oft wird auch $\cancel{\it{p}}_{T}$ angegeben, da $|E| = |P|$ gilt.
+
+\subsection{Jets}
+Allgemein können Jets auf unterschiedlichste Weise definiert werden. Oft wird darunter ein Kegel im Dektektor gemeint, der durch die Bereiche von Energiedepositionen im ECAL und HACL bestimmt wird. Dabei ist die Energieauflösung der Jets relativ schlecht. Um diese zu verbessern wird beim CMS-Detektor der sogenannte Particle-Flow-Algorithmus (PFA) angewandt. Dieser kombiniert die unterschiedlichen Informationen aus den Subdetektoren. Es wird wieder ein Kegel definiert in welchem der Jet liegt. Darin wird die Energie, welche geladene Teilchen im ECAL und HACL deponieren mit ihren Spuren im Tracker kombiniert. Somit werden auch Energiedepositionen, welche außerhalb des Kegels liegen mit zur Jet-Energie gezählt. Ausßerdem werden auch die Energiedepositionen von ungeladenen Teilchen dazugerechnet.
+
+\subsection{B-Tagging}
+Um festzulegen ob ein Jet aus einem Bottom-Quark entstanden ist, kann man das sogenannte B-Tagging anwenden. Dabei wird die hohe Lebensdauer von B-Quarks ausgenutzt. Die erhöhte Lebensdauer dieser Quarks führt zu einem Secondary-Vertex des Jets. Ebenso gibt es Displaced-Tracks von den Zerfallsteilchen des B-Quarks. Durch eine Likelihood-Anpassung des Secondary-Vertex und den Displaced-Tracks kann für jeden Jet eine Wahrscheinlichkeit angegeben werden, ob er aus einem B-Quark entstanden ist.
+
+\section{Messung}
+Bei den Messungen von Top-Quarks gibt es prinzipiell zwei Arten von Messungen. Auf der einen Seite die Messungen des Wirkunsquerschnittes und auf der anderen Seite die Massen-Messungen. Die Messungen des Wirkungsquerschnittes wird im Folgenden kurz erläutert. Die Massenmessungen wird anschließend an einem Beispiel im Detail erläutert.
+
+\subsection{Inklusiver Wirkungsquerschnitt}
+Beim Inklusiven Wirkungsquerschnitt handelt es sich um ein Zählexperiment, wo nur die Anzahl der Ereignisse gezählt wird. Dabei ist der Wirkungsquerschnitt gegeben durch:
+
+\begin{equation}
+\sigma = \frac{N^{obs} - N^{bkg}}{\int \mathcal{L} dt \cdot \epsilon}
+\end{equation}
+Wobei $N^{obs}$ die Zahl der beobachteten Ereignisse, $N^{bkg}$ der Untergrund, $\int \mathcal{L} dt$ die Luminosität und $\epsilon$ die Effizienz ist.
+
+Bei dem Vergleich vom Inklusiven Wirkungsquerschnitt kann gezeigt werden ob der erwartete Wirkungsquerschnitt, welcher durch theoretische Berechnungen gewonnen wurde, mit den experimentellen Ergebnissen übereinstimmt. Um jedoch noch genauere Aussagen über die Güte von theoretischen Modellen bekommen zu können die Detektoreffekte, welche im Inklusiven Wirkungsquerschnitt vorhanden sind, durch Entfaltung herausgenommen werden. Somit wird der Differentielle Wirkungsquerschnitt bestimmt, mit welchem die Theorie auch bei unterschiedlichen Experimenten verglichen werden kann.
+
+\subsection{Messung der Masse des Top-Quarks}
+Um die Masse des Top-Quarks zu Messen müssen unterschiedliche Methoden angewandt werden. Als erstens wird die Monte Carlo (MC) vorgestellt, danach wird die Selektion der Daten erläutert, darauf aufbauend wird der kinematische Fit und die Ideogramm Methode erklärt und abschließend werden kurz die systematischen Unsicherheiten und das Ergebnis diskutiert.
+
+\subsection{Simulation Monte Carlo (MC) Methode}
+Bei der MC Methode werden durch Simulationen aus den Theoriemodellen Teilchen generiert. Dabei werden zuerst die Vierervektoren der Teilchen simuliert und anschließend der hadronische Schauer im Detektor. Ebenso wird der Detektor und die Signalverarbeitung simuliert. Darauß ergeben sich wie bei den echten Daten Ereignisse, welche gleich rekonstruiert und analysiert werden. Werden nun Abweichungen zwischen Daten und MC Ereignissen entdeckt kann das auf Fehler in den Modellen bzw. neue Physik schließen.
+
+\subsection{Selektion der Daten}
+Die Daten für die Messung stammen von 2011 und wurden mit einer integrierten Luminosität von $L_{int} = \int f \cdot n_b \cdot \frac{n_1 \cdot n_2}{4 \pi \sigma_x \sigma_y} \mathrm{d}t = \SI{5.0 \pm 0.1}{fb^{-1}}$ bei $\SI{7}{TeV}$ aufgenommen. Bei der Selektion wurde ein Lepton mit einem $p_T > \SI{30}{GeV}$, ein Neutrino mit einem $\cancel{\it{E}}_{T} > \SI{30}{GeV}$, 4 Jets mit jeweils $p_T > \SI{30}{GeV}$ und 2 Jets mit einem B-Tag gefordert. Dadurch wurden 17985 $\textrm{t}\bar{\textrm{t}}$ Kandidaten aus den Daten selektiert.
+
+\subsection{Kinematischer Fit}
+Beim Kinematischen Fit wird versucht die beste Zuordnung der Jets zu den jeweiligen Ursprungsteilchen zu finden. Ebenso ist die z-Komponente des Neutrinos nicht bekannt. Der Fit wird für Kombinationen von Jets und auf dem Gleichungssystem
+
+\begin{equation}
+  m(t\rightarrow lvb) = m(t \rightarrow q \overline{q} b)
+\end{equation}
+\begin{equation}
+  m(lv) = M_W
+\end{equation}
+\begin{equation}
+  m(q \overline{q}) = M_W
+\end{equation}
+durchgeführt. Dabei wird $M_W = \SI{80.4}{GeV}$ (lit. Wert) gesetzt. Es werden nur jene Kombinationen behalten welche ein $P(\chi^2) > 0.2$ für das Gleichungssystem aufweisen. Aus den MC-Ereignissen kann nun gesagt werden, welche Permutation correct, wrong oder unmachted zugeordnet wurde. Die jeweilige Kombination wird mittels dem $P(\chi^2)$-Wert gewichtet. Dadurch ist es möglich den Untergrund und falsch zugeordnete $\textrm{t}\bar{\textrm{t}}$-Ereigniss noch besser rauszuschneiden.
+
+\subsection{Ideogramm Methode}
+Bei der Bestimmung der Top-Masse kann nicht einfach der Peak der nun gefitteten Massenverteilung gewählt werden. Dies liegt daran, dass die MC-Ereignisse mit unterschiedlichen Massen berechnet wurden und der Detektor auch einen gewissen Offset in der Energiemessung der Jets hat. Um die wahre Top-Masse zu finden werden nun aus MC-Ereignissen Schablonen für unterschiedliche MC-Massen und Jet-Energie-Skalen (JES) berechnet. Dabei wird die Top-Masse mit dem Kinematischen Fit unter gleichzeitigem Festhalten der Masse des hadronischen W-Bosons rekonstruiert. Die W-Boson-Masse wird dabei aus Literaturwerten genommen.
+
+\subsection{Systematische Unsicherheiten}
+Bei der Messung gibt es unterschiedliche systematische Unsicherheiten. Dabei ist die Unsicherheit auf die JES der B-Jets und die $p_T$ und $\eta$ Abhängigkeit der JES von großer Bedeutung. Bei der B-JES ergibt sich das Problem, dass für alle Jets die gleiche JES angewandt wird. Da B-Jets jedoch oft Neutrinos enthalten ist es sehr wahrscheinlich das ihre Energie trotz Korrektur zu gering ist. 
+
+Allgemein kann die Eichung der JES mit dem W-Boson nur dann gelten, wenn der Detektor überall gleich sensitiv auf $p_T$ und $\eta$ ist. Da dies nicht der Fall ist kommt es zum Beispiel zu größeren Unsicherheiten bei höherem $\eta$.
+
+\subsection{Ergebniss}
+Nach der Rekonstruktion der Top-Masse in den $\mu$- und $e$-Zerfällen wurde für alle 5174 ein kombinierter Fit durchgeführt welcher eine Masse mit einer JES von liefert.
+\begin{equation}
+  m_t = (\SI{173.49}{} \pm \SI{0.43}{} (stat.+JES) \pm \SI{0.98} (syst.)){GeV}
+\end{equation}
+\begin{equation}
+  JES = \SI{0.994}{} \pm \SI{0.003}{} (stat.) \pm \SI{0.008}{} (syst.)
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%\section{Literatur}
+%\nocite{*}
+%\bibliographystyle{alpha}
+%\bibliography{lit}
+\end{document}

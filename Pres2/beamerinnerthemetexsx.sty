@@ -1,0 +1,105 @@
+\mode<presentation>
+%================================================================================
+%==== Title page ====
+
+%% Background colors and logos
+\setbeamertemplate{background}{
+  \begin{tikzpicture}
+	\useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+	
+	\fill[color=jgulightgrey] (0,2.1) rectangle (\the\paperwidth,\the\paperheight);
+	
+	\fill[color=jgured] (0,0) rectangle(2.95,2.05);
+	
+	\node (zero) at (1.4525,1.025) {\includegraphics[width=.26\textwidth]{Logos/JGU-Logo_farbe_rgb_weisseSchrift.pdf}};
+	
+	\fill[color=jgudarkgrey] (3.05,0) rectangle(\the\paperwidth,2.05);
+	
+	\node[inner sep=0pt,anchor =south east] at (\the\paperwidth,-0.03) {\inserttitlegraphic};
+	
+	\ifnum\thepage>1\relax%
+		\fill[white,opacity=1] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+	\fi
+  \end{tikzpicture}
+}
+
+
+%%Authorname,Title,Date
+
+\defbeamertemplate*{title page}{texsx}[1][]
+{ 
+   \ifx\insertsubtitle\@empty%
+		%without subtitle
+		\vskip5.5cm%
+		\begin{beamercolorbox}[wd=12cm,right,sep=8pt,#1]{title page header}
+			\usebeamerfont{title}\inserttitle\par%%
+		\end{beamercolorbox}%
+		  \vskip.9cm%
+		\begin{beamercolorbox}[wd=12cm,leftskip=3cm,#1]{author}
+			\usebeamerfont{author}\insertauthor%
+		\end{beamercolorbox}
+			\vskip0.15cm%
+		\begin{beamercolorbox}[wd=12cm,leftskip=3cm,#1]{author}
+			\usebeamerfont{author}\insertinstitute%
+		\end{beamercolorbox}
+			\vskip0.15cm%
+		\begin{beamercolorbox}[wd=12cm,leftskip=3cm,#1]{date}
+			\usebeamerfont{author}\insertdate%
+		\end{beamercolorbox}
+		
+		%with subtitle
+		\else%
+			\vskip4.5cm%
+			\begin{beamercolorbox}[wd=12cm,right,sep=8pt,#1]{title page header}
+				\usebeamerfont{title}\inserttitle\par%%
+			\end{beamercolorbox}%
+			\vskip0.15cm%
+			\begin{beamercolorbox}[wd=12cm,right,sep=8pt,#1]{title page header}
+				\usebeamerfont{subtitle}\insertsubtitle\par%%
+			\end{beamercolorbox}%
+			    \vspace*{\fill}
+			\begin{beamercolorbox}[wd=12cm,leftskip=3cm,#1]{author}
+			\usebeamerfont{author}\insertauthor%
+			\end{beamercolorbox}
+			\vskip0.15cm%
+			\begin{beamercolorbox}[wd=12cm,leftskip=3cm,#1]{author}
+			\usebeamerfont{author}\insertinstitute%
+			\end{beamercolorbox}
+			\vskip0.15cm%
+			\begin{beamercolorbox}[wd=12cm,leftskip=3cm,#1]{date}
+			\usebeamerfont{author}\insertdate%
+			\end{beamercolorbox}
+			\vskip-0.5cm% 
+		\fi
+}
+
+%================================================================================
+
+
+% Items
+
+\setbeamertemplate{items}[square]
+\setbeamertemplate{sections/subsections in toc}[square]
+
+%Sectionpage
+\setbeamertemplate{section page}
+{
+    \begin{centering}
+    \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+    \end{beamercolorbox}
+    \end{centering}
+}
+
+%Subsectionpage
+\setbeamertemplate{subsection page}
+{
+    \begin{centering}
+    \begin{beamercolorbox}[sep=12pt,center]{part title}
+	\usebeamercolor{subsection title}\insertsubsection\par
+    \end{beamercolorbox}
+    \end{centering}
+}
+
+\mode
+<all>

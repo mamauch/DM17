@@ -1,0 +1,48 @@
+\mode<presentation>
+%==== Color settings ====
+\definecolor{jgured}{cmyk}{0,1,.8,.2}
+\definecolor{jgudarkgrey}{cmyk}{0,0,0,.7}
+\definecolor{jgulightgrey}{cmyk}{0,0,0,.4}
+
+%\setbeamercolor{section in head/foot}{parent=palette primary}
+\setbeamercolor{section in head/foot}{bg=white}
+\setbeamertemplate{section in head/foot shaded}[default][10]
+\setbeamercolor{subsection in head/foot}{parent=palette secondary}
+\setbeamercolor{author in head/foot}{parent=palette tertiary}
+\setbeamercolor{title in head/foot}{parent=palette quaternary}
+\setbeamercolor{page number in head/foot}{use={structure,normal text},fg=structure.fg!50!normal text.fg,bg=jgudarkgrey}
+
+%==== Settings for titlepage ====
+\setbeamercolor*{title page header}{fg=white}
+\setbeamercolor*{author}{fg=white}
+\setbeamercolor*{date}{fg=white}
+
+%==== Settings for Items ====
+\setbeamercolor*{item}{fg=jgured}
+
+%==== Colors of blocks (Theorem uses block title and body) ====
+%\setbeamercolor{block body}{use=structure,fg=black,bg=white}
+\setbeamercolor{block title}{use=structure,fg=white,bg=jgudarkgrey}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=alerted text.fg!0!jgured}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=example text.fg!65!black}
+
+%=== palette color===
+\setbeamercolor*{palette primary}{use=structure,fg=white,bg=jgudarkgrey}
+\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=jgulightgrey}
+\setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=jgulightgrey}
+\setbeamercolor*{palette quaternary}{use=structure,fg=white,bg=jgudarkgrey}
+
+
+\setbeamercolor*{sidebar}{use=structure,bg=structure.fg}
+  
+%\setbeamercolor*{palette sidebar primary}{use=structure,fg=structure.fg!10}
+%\setbeamercolor*{palette sidebar secondary}{fg=white}
+%\setbeamercolor*{palette sidebar tertiary}{use=structure,fg=structure.fg!50}
+%\setbeamercolor*{palette sidebar quaternary}{fg=white}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+
+\mode<all>

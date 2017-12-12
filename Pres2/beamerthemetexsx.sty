@@ -1,0 +1,29 @@
+%\DeclareOptionBeamer{compress}{\beamer@compresstrue}
+%\ProcessOptionsBeamer
+\mode<presentation>
+
+% Required packages
+\RequirePackage{tikz}
+\RequirePackage{color}
+
+%required command to change color of shorttitle
+\makeatletter
+\renewcommand\insertshorttitle[1][]{%
+  \beamer@setupshort{#1}%
+  \let\thanks=\@gobble%
+  \ifnum\c@page=1%
+  \hyperlinkpresentationend{\beamer@insertshort{\usebeamercolor*[fg]{title in head/foot}\beamer@shorttitle}}%
+  \else%
+  \hyperlinkpresentationstart{\beamer@insertshort{\usebeamercolor*[fg]{title in head/foot}\beamer@shorttitle}}%
+  \fi}
+\makeatother
+
+% Settings
+\useoutertheme[footline=authorinstitute]{texsx} %
+\usecolortheme{texsx}
+\useinnertheme{texsx}
+
+\setbeamertemplate{navigation symbols}{} % disable navigation symbols
+\setbeamertemplate{blocks}[rounded][shadow=true]  
+
+\mode<all>
