@@ -1,5 +1,0 @@
-\beamer@endinputifotherversion {3.36pt}
-\select@language {ngerman}
-\beamer@sectionintoc {1}{Agglomerative and Divisive Clustering}{3}{0}{1}
-\beamer@sectionintoc {2}{K-means}{13}{0}{2}
-\beamer@sectionintoc {3}{EM}{17}{0}{3}

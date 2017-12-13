@@ -2,8 +2,8 @@ import sys
 import random
 from math import sqrt
 import matplotlib.pyplot as plt
-from sklearn import metrics
-from sklearn.metrics import accuracy_score
+#from sklearn import metrics
+#from sklearn.metrics import accuracy_score
 import numpy as np
 
 # Idea from http://www.caner.io/purity-in-python.html
@@ -76,7 +76,7 @@ def plotCurrentClusters(current_cluster, centers):
     ax.set_ylabel('y')
     plt.colorbar(scatter)
     fig.show()
-    raw_input()
+    input()
 
 argsys = sys.argv
 
@@ -94,14 +94,14 @@ with open(filename,'r') as rf:
 
 
 true_cluster = {}
-for i in range(7):
+for i in range(6):
     true_cluster[i+1] = []
 for key in true_cluster.keys():
     for point in list_of_list:
         if point[2] == key:
             true_cluster[key].append([point[0], point[1]])
 
-#plotCurrentClusters(true_cluster, getCurrentCenters(true_cluster))
+plotCurrentClusters(true_cluster, getCurrentCenters(true_cluster))
 
 bestRANDK = 0
 bestNormalizedMutualInformationK = 0
@@ -137,33 +137,10 @@ for k in range(int(maxk)):
 
 
 
-        #plotCurrentClusters(current_cluster, current_centers)
+        plotCurrentClusters(current_cluster, current_centers)
 
         if old_centers == current_centers:
             checkCenters = False
 
 
-    ture_lable = []
-    lable = []
-    for ckey in current_cluster.keys():
-        for cpoint in current_cluster[ckey]:
-            for tkey in true_cluster.keys():
-                for tpoint in true_cluster[tkey]:
-                    if cpoint == tpoint:
-                        ture_lable.append(tkey)
-                        lable.append(ckey+1)
-    if currentRAND < metrics.adjusted_rand_score(ture_lable, lable):
-        bestRANDK = k+1
-        currentRAND = metrics.adjusted_rand_score(ture_lable, lable)
-
-    if currentPurityOfClusters < purityScore(ture_lable, lable):
-        bestPurityOfClustersK = k+1
-        currentPurityOfClusters = purityScore(ture_lable, lable)
-
-    if currentNormalizedMutualInformation < metrics.normalized_mutual_info_score(ture_lable, lable):
-        bestNormalizedMutualInformationK = k+1
-        currentNormalizedMutualInformation = metrics.normalized_mutual_info_score(ture_lable, lable)
-
-print ("Best RAND k:" + str(bestRANDK))
-print ("Best NormalizedMutualInformation k:" + str(bestNormalizedMutualInformationK))
-print ("Best PurityOfClusters k:" + str(bestPurityOfClustersK))
+    
